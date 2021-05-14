@@ -140,3 +140,8 @@ LOGIN_URL = '/users/login'
 LOGIN_REDIRECT_URL = ('..')
 
 LOGOUT_REDIRECT_URL = ('..')
+
+# Настройки Heroku
+import django_heroku
+django_heroku.settings(locals())
+
