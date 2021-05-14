@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'learning_log.apps.LearningLogConfig',
 
     # Мои приложения
-    'users'
+    'users',
+
+    # Сторонние приложения
+    'bootstrap4',
 
 ]
 
