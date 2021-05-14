@@ -1,25 +1,25 @@
 {% extends "base.html" %}
 
 {% block page_header %}
-    <h1>Topics</h1>
+    <h1><p class="text-info">Topics</p></h1>
   {% endblock page_header %}
 
 {% block content %}
 
-<p>Topics</p>
+
 
 <ul>
     {% for topic in topics %}
-         <li><h3>
+         <li><h4>
         <a href="{% url 'learning_log:topic' topic.id %}">{{ topic }}</a>
-        </h3></li>
+        </h4></li>
     {% empty %}
         <li><h3>No topics have been added yet.</h3></li>
 
     {% endfor %}
 </ul>
 
-    <h3><a href="{% url 'learning_log:new_topic' %}">Add new topic</h3>
+    <h4><a href="{% url 'learning_log:new_topic' %}">Add new topic</h4>
 
 
 {% endblock content %}
