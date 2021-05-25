@@ -11,7 +11,7 @@ def index(request):
     """Application home page diary"""
     return render(request, 'index.html')
 
-@login_required
+@login_required(login_url='/userslogin/')
 def topics(request):
     """Lists topics."""
     topics = Topic.objects.filter(owner=request.user).order_by('date_added')
