@@ -5,17 +5,17 @@ from . import views
 
 app_name = 'learning_log'
 urlpatterns = [
-    # Домашняя страница
+    # Home page
     path('', views.index, name='index'),
-    # Cтраница со списком всех тем
+    # Page with a list of all topics
     path('topics/', views.topics, name='topics'),
-    # Cтраница с подробной информацией по отдельной теме
+    # A page with detailed information on a specific topic
     path('topics/<int:topic_id>/', views.topic, name='topic'),
-    # Страница добавления новой темы
+    # The page for adding a new topic
     path('new_topic/', views.new_topic, name='new_topic'),
-    # Страница добавления новой записи
+    # The page for adding a new record
     path('new_entry/<int:topic_id>/', views.new_entry, name='new_entry'),
-    # Старница для редактирования записи
+    # Page for editing a record
     path('edit_entry/<int:entry_id>/', views.edit_entry, name='edit_entry'),
 
 

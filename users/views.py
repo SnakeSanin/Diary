@@ -5,20 +5,20 @@ from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
 
 def register(request):
-    """Регестрируем нового пользователя"""
+    """Registering a new user"""
     if request.method != 'POST':
-        #Выводит пустую форму регистрации.
+        #Displays an empty registration form.
         form = UserCreationForm()
     else:
-        # Обработка заполненной формы
+        # Processing a completed form
         form = UserCreationForm(data=request.POST)
 
         if form.is_valid():
             new_user = form.save()
-            # Выполение входа и перенаправление на домашнюю страницу.
+            # Logging in and redirecting to the home page.
             login(request, new_user)
             return redirect('learning_log:index')
 
-    # Вывести пустую или недействительную форму
+    # Display empty or invalid form
     context = {'form': form}
     return render(request, 'registration/register.html', context)

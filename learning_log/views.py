@@ -8,21 +8,21 @@ from .forms import TopicForm, EntryForm
 # Create your views here.
 
 def index(request):
-    """Домашняя страница приложения diary"""
+    """Application home page diary"""
     return render(request, 'index.html')
 
 @login_required
 def topics(request):
-    """Выводит список тем."""
+    """Lists topics."""
     topics = Topic.objects.filter(owner=request.user).order_by('date_added')
     context = {'topics': topics}
     return render(request, 'topics.html', context)
 
 @login_required
 def topic(request, topic_id):
-    """Выводит одну тему и все ее записи"""
+    """Displays one topic and all its entries"""
     topic = Topic.objects.get(id=topic_id)
-    # Проверка того, что тема принадлежит текущему пользователю.
+    # Checking that the topic belongs to the current user.
     if topic.owner != request.user:
         raise Http404
     entries = topic.entry_set.order_by('-date_added')
@@ -31,54 +31,54 @@ def topic(request, topic_id):
 
 @login_required
 def new_topic(request):
-    """Определяет новую тему"""
+    """Defines a new topic"""
     if request.method != 'POST':
-        # Данные не отправлялись пустая форма
+        # No data submitted empty form
         form = TopicForm()
     else:
-        # Отправлены данные POST; обработать данные.
+        # POST data has been sent; process data.
         form = TopicForm(data=request.POST)
         if form.is_valid():
             new_topic = form.save(commit=False)
             new_topic.owner = request.user
             form.save()
             return redirect('learning_log:topics')
-    # Вывести пустую или недействительную форму
+    # Display empty or invalid form
     context = {'form': form}
     return render(request, 'new_topic.html', context)
 
 @login_required
 def new_entry(request, topic_id):
-    """Добавляет новую запись по конкретной теме."""
+    """Adds a new post on a specific topic."""
     topic = Topic.objects.get(id=topic_id)
     if request.method != 'POST':
-        # Данные не отправлялись; создается пустая форма.
+        # No data was sent; an empty form is created.
         form = EntryForm()
     else:
-        # Отправлены данные POST; обработать данные.
+        # POST data has been sent; process data.
         form = EntryForm(data=request.POST)
         if form.is_valid():
             new_entry = form.save(commit=False)
             new_entry.topic = topic
             new_entry.save()
             return redirect('learning_log:topic', topic_id=topic_id)
-    # Вывести пустую или недействительную форму.
+    # Display empty or invalid form.
     context = {'topic': topic, 'form': form}
     return render(request, 'new_entry.html', context)
 
 @login_required
 def edit_entry(request, entry_id):
-    """Редактирует существующий профиль"""
+    """Edits an existing profile"""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
     if topic.owner != request.user:
         raise Http404
 
     if request.method != 'POST':
-        # Исходный запрос; форма заполняется данными текущей записи.
+        # Original request; the form is filled with the data of the current record.
         form = EntryForm(instance=entry)
     else:
-        # Отправка данных POST; обработать данные.
+        # Sending POST data; process data.
         form = EntryForm(instance=entry, data=request.POST)
         if form.is_valid():
             form.save()

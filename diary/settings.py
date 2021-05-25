@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # Приложения Django по умолчанию
+    # Default Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,10 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'learning_log.apps.LearningLogConfig',
 
-    # Мои приложения
+    # My apps
     'users',
 
-    # Сторонние приложения
+    # Third party applications
     'bootstrap4',
 
 ]
@@ -135,14 +135,14 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Мои настройки
+# My settings
 LOGIN_URL = '/users/login'
 
 LOGIN_REDIRECT_URL = ('..')
 
 LOGOUT_REDIRECT_URL = ('..')
 
-# Настройки Heroku
+# Settings Heroku
 
 django_heroku.settings(locals())
 
