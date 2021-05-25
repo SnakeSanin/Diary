@@ -1,4 +1,4 @@
-"""Определяет схемуы работы с learning_log"""
+"""Defines the schemes for working with learning_log"""
 from django.urls import path
 
 from . import views
