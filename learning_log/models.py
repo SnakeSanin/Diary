@@ -1,5 +1,3 @@
-"""model is a normal Class; it contains attributes and methods like all other classes"""
-
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -8,18 +6,17 @@ from django.contrib.auth.models import User
 
 class Topic(models.Model):  # a class named Topic that inherits from Model a parent class included with Django
     # that defines the basic functionality of the model
-    """The topic the user is studying"""
     text = models.CharField(max_length=200)  # CharField attributes can be used to store small amounts of text
     date_added = models.DateTimeField(auto_now_add=True)  # DateTimeField - block of data to store date and time
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)  # the owner field is added, used in relation
+    # to the foreign key to the User model
+    # if a user is deleted, all topics associated with that user will also be deleted
 
     def __str__(self): # implementation of __str__(), which returns the string stored in the text attribute
-        """Returns the string representation of the model"""
         return self.text
 
 
 class Entry(models.Model):  # the Entry class inherits from the base class Model
-    """Information studied by the user on the topic"""
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)  # foreign key contains
     # a reference to another record in the database
     # The on_delete=models.CASCADE argument tells Django that when a theme is deleted
@@ -35,7 +32,6 @@ class Entry(models.Model):  # the Entry class inherits from the base class Model
         # a large number of Entries when accessing more than one entry
         verbose_name_plural = 'entries'
     def __str__(self):  # tells Django what information should be displayed when referring to individual records
-        """Returns the string representation of the model"""
         if f'{self.text[50:]}':
             return f"{self.text[:50]}..."
         else:

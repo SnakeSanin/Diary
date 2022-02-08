@@ -8,16 +8,15 @@ from .forms import TopicForm, EntryForm
 # Create your views here.
 
 def index(request):
-    """Application home page diary"""
     return render(request, 'index.html')
 
-@login_required(login_url='/userslogin/')
+@login_required(login_url='/userslogin/')  # the login_required() code checks if the user is logged in and
+# Django only runs the topics() code if that condition is done
 def topics(request):  # functions topics() requires one parameter: the request object received by Django from the server
-    """Lists topics."""
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')  # database context to get Topic objects
-    # sorted by date_added attribute
-    # context is a dictionary in which the keys are the names used in the template for accessing data,
-    # and the values are the data that should be transferred patterned
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')  # if the user is signed in, the attribute
+    # is set on the request object request.user with information about the user.
+    # code snippet Topic.objects. filter(owner=request.user) tells Django
+    # to fetch only those Topic objects whose owner attribute matches the current user.
     context = {'topics': topics}  # defines the context that will be passed to the template
     return render(request, 'topics.html', context)  # when building a page that uses the data, the context variable
     # is passed to the render() function, as well as the request object and the path to the template
@@ -25,11 +24,10 @@ def topics(request):  # functions topics() requires one parameter: the request o
 @login_required
 def topic(request, topic_id):  # The function gets the value that matches the expression
     # /<int:topic_id>/ and store it in topic_id
-    """Displays one topic and all its entries"""
     topic = Topic.objects.get(id=topic_id)  # the get() function is used to get the topic
     # Checking that the topic belongs to the current user.
-    if topic.owner != request.user:  # error output if you are not the topic owner
-        raise Http404
+    if topic.owner != request.user:  # if the topic does not belong to the current user, an Http404 exception is thrown
+        raise Http404  # Django returns 404 error page
     entries = topic.entry_set.order_by('-date_added') # posts related to the topic are loaded and ordered by date_added:
     # a minus sign before date_added sorts the results in reverse order
     context = {'topic': topic, 'entries': entries}  # The subject and entries are stored in the context dictionary
@@ -37,17 +35,16 @@ def topic(request, topic_id):  # The function gets the value that matches the ex
 
 @login_required
 def new_topic(request):
-    """Defines a new topic"""
     if request.method != 'POST':
         # No data submitted empty form
         form = TopicForm()
     else:
-        # POST data has been sent; process data.
-        form = TopicForm(data=request.POST)
+        form = TopicForm(data=request.POST)  # POST data has been sent; process data.
         if form.is_valid():
-            new_topic = form.save(commit=False)
-            new_topic.owner = request.user
-            form.save()
+            new_topic = form.save(commit=False)  # the first time form.save() is called, the commit=False
+            # argument is passed because the new theme must be modified before being stored in the database
+            new_topic.owner = request.user  # the new theme's owner attribute is set to the current user
+            form.save()  # we call save() on the newly defined theme instance
             return redirect('learning_log:topics')
     # Display empty or invalid form
     context = {'form': form}
@@ -55,7 +52,6 @@ def new_topic(request):
 
 @login_required
 def new_entry(request, topic_id):
-    """Adds a new post on a specific topic."""
     topic = Topic.objects.get(id=topic_id)   # the theme ID will be needed to render the page and process the form data
     if request.method != 'POST':  # the request method - GET or POST - is checked at the point
         form = EntryForm()  # No data was sent; an empty form is created.
@@ -75,7 +71,6 @@ def new_entry(request, topic_id):
 
 @login_required
 def edit_entry(request, entry_id):
-    """Edits an existing profile"""
     entry = Entry.objects.get(id=entry_id)  # get the post object the user wants to change and the subject
     # associated with that post
     topic = entry.topic
