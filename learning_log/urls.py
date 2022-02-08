@@ -1,7 +1,7 @@
 """Defines the schemes for working with learning_log"""
-from django.urls import path  # path function, it is required for linking URLs to views
+from django.urls import path
 
-from . import views  # the views module is imported point tells Python to import views from another directory url.py
+from . import views
 
 app_name = 'learning_log'  # The app_name variable helps Django distinguish
 # this urls.py file from the files of the same name in other applications in the project

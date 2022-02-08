@@ -1,6 +1,6 @@
 """model is a normal Class; it contains attributes and methods like all other classes"""
 
-from django.db import models  # the model tells Django how to work with the data that will be stored in the application
+from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
