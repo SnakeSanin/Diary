@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+"""A short program receives commands and passes them to the appropriate part of Django for execution.
+We use these commands to manage tasks such as working with databases data and server launch."""
 import os
 import sys
 

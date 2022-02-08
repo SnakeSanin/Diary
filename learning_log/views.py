@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect  # render() function, which generates a response
+# to based on data obtained from submissions
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from .models import Topic, Entry
+from .models import Topic, Entry  # the model associated with the desired data is imported
 from .forms import TopicForm, EntryForm
 
 
@@ -12,22 +13,28 @@ def index(request):
     return render(request, 'index.html')
 
 @login_required(login_url='/userslogin/')
-def topics(request):
+def topics(request):  # functions topics() requires one parameter: the request object received by Django from the server
     """Lists topics."""
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
-    context = {'topics': topics}
-    return render(request, 'topics.html', context)
+    topics = Topic.objects.filter(owner=request.user).order_by('date_added')  # database context to get Topic objects
+    # sorted by date_added attribute
+    # context is a dictionary in which the keys are the names used in the template for accessing data,
+    # and the values are the data that should be transferred patterned
+    context = {'topics': topics}  # defines the context that will be passed to the template
+    return render(request, 'topics.html', context)  # when building a page that uses the data, the context variable
+    # is passed to the render() function, as well as the request object and the path to the template
 
 @login_required
-def topic(request, topic_id):
+def topic(request, topic_id):  # The function gets the value that matches the expression
+    # /<int:topic_id>/ and store it in topic_id
     """Displays one topic and all its entries"""
-    topic = Topic.objects.get(id=topic_id)
+    topic = Topic.objects.get(id=topic_id)  # the get() function is used to get the topic
     # Checking that the topic belongs to the current user.
-    if topic.owner != request.user:
+    if topic.owner != request.user:  # error output if you are not the topic owner
         raise Http404
-    entries = topic.entry_set.order_by('-date_added')
-    context = {'topic': topic, 'entries': entries}
-    return render(request, 'topic.html', context)
+    entries = topic.entry_set.order_by('-date_added') # posts related to the topic are loaded and ordered by date_added:
+    # a minus sign before date_added sorts the results in reverse order
+    context = {'topic': topic, 'entries': entries}  # The subject and entries are stored in the context dictionary
+    return render(request, 'topic.html', context)  # which is passed to topic.html template
 
 @login_required
 def new_topic(request):

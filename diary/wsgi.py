@@ -1,4 +1,8 @@
 """
+
+The wsgi file helps Django provide
+generated files (the file name is short for "Web Server Gateway Interface").
+
 WSGI config for diary project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.

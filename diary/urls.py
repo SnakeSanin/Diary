@@ -1,5 +1,8 @@
 """diary URL Configuration
 
+The urls file tells Django which pages to follow
+build in response to browser requests.
+
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
 Examples:
@@ -13,11 +16,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+from django.contrib import admin  # The first two lines import the functions and
+from django.urls import path, include  # # modules that control the project URLs and the admin site
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
+urlpatterns = [  # a variable is defined in the body of the file urlpatterns
+    path('admin/', admin.site.urls),  # the code includes the admin.site.urls module,
+    # which defines all the URLs that can be requested from the admin site.
     path('users', include('users.urls')),
     path('', include('learning_log.urls')),
 ]
